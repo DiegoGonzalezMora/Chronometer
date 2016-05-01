@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+<head><title>Cronómetro</title><meta charset="UTF-8">
+<link rel="stylesheet" href="css/jquery.mobile-1.4.5.min.css">
+<style>
+
+  *{
+	-webkit-touch-callout: none; /* iOS Safari */
+  -webkit-user-select: none;   /* Chrome/Safari/Opera */
+  -khtml-user-select: none;    /* Konqueror */
+  -moz-user-select: none;      /* Firefox */
+  -ms-user-select: none;       /* Internet Explorer/Edge */
+  user-select: none;           /* Non-prefixed version, currently
+                                  not supported by any browser */
+  }
+
+  body {text-align:center;}
+
+</style>
+<script type="text/javascript" src="js/zepto.min.js" > </script>  
+<script src="js/jquery-2.1.4.min.js"></script>
+<script src="js/jquery.mobile-1.4.5.min.js"></script>
+<script type="text/javascript">
+  $(function(){ 
+    var t, lista = $("#lista"), cl = $("#crono");
+    
+    $.event.special.tap.emitTapOnTaphold = false;	
+
+    function mostrar()  { cl.html((+cl.html() + 0.01).toFixed(2)); };
+    function arrancar() { t=setInterval(mostrar, 10);};
+    function cambiar()  { if (!t) arrancar(); else parar(); };
+    
+    function parar()    { 
+  		lista.append("<li>"+cl.html()+"</li>");
+  		
+  		clearInterval(t);  
+  		t=undefined; 
+  	};
+	
+  
+    $("body").bind('tap', cambiar);
+    $("body").on('swipe', function(){ 
+  		if(!t){
+  			cl.html("0.00"); 
+  			lista.html(" "); 
+  		}
+  	});
+		
+  });
+</script>
+</head>
+<body>
+<h2>Cronómetro</h2>
+<p>Tap para arrancar el cronómetro.</p>
+<p>Deslizar para resetearlo</p>
+
+<h2><span id="crono"> 0.00 </span> segundos </h2>
+
+<ol id="lista"></ol>
+</body>
+</html>
